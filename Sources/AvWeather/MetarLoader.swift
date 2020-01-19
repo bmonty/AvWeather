@@ -4,7 +4,7 @@
 //
 import Foundation
 
-enum skyCoverConditions: String {
+public enum skyCoverConditions: String {
     case skc = "SKC"
     case clr = "CLR"
     case cavok = "CAVOK"
@@ -17,7 +17,7 @@ enum skyCoverConditions: String {
 
 /// Structure to hold sky condition info.  `skyCover` is a standard sky cover value (i.e. FEW, OVC).
 /// `base` is the cloud base height in AGL.  If `skyCover` is "CLR" then `base` is 0.
-struct SkyCondition {
+public struct SkyCondition {
     /// Reported sky cover (i.e. CLR, FEW, SCT, OVC, etc.).
     let skyCover: skyCoverConditions
     /// Sky cover base height in AGL.
@@ -25,7 +25,7 @@ struct SkyCondition {
 }
 
 /// Structure to hold Metar data.
-struct Metar {
+public struct Metar {
     var rawText: String = ""
     var stationId: String = ""
     var observationTime: Date? = nil
@@ -44,7 +44,7 @@ struct Metar {
     var threeHourPressureTendency: Float = Float.nan
 }
 
-struct MetarLoaderError: Error {
+public struct MetarLoaderError: Error {
     enum ErrorKind {
         case invalidIcaoId
         case serverError
@@ -55,11 +55,11 @@ struct MetarLoaderError: Error {
     let kind: ErrorKind
 }
 
-protocol MetarLoaderDelegate {
+public protocol MetarLoaderDelegate {
     func dataLoaded(_ metarLoader: MetarLoader, error: Error?)
 }
 
-class MetarLoader : NSObject {
+public class MetarLoader : NSObject {
 
     /// Station ICAO ID for this MetarLoader.
     let id: String
@@ -152,7 +152,7 @@ class MetarLoader : NSObject {
 
 extension MetarLoader: XMLParserDelegate {
 
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         if elementName == "data" {
             guard let strCount = attributeDict["num_results"],
                 let count = Int(strCount) else {
@@ -193,7 +193,7 @@ extension MetarLoader: XMLParserDelegate {
         }
     }
 
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "METAR" {
             #if DEBUG
             print(currentItem!)
@@ -292,7 +292,7 @@ extension MetarLoader: XMLParserDelegate {
         }
     }
 
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
+    public func parser(_ parser: XMLParser, foundCharacters string: String) {
         buffer += string
     }
 }
