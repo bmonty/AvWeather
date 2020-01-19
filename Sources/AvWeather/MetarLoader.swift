@@ -62,11 +62,11 @@ public protocol MetarLoaderDelegate {
 public class MetarLoader : NSObject {
 
     /// Station ICAO ID for this MetarLoader.
-    let id: String
+    public let id: String
     /// Set to array of `Metar` if data is loaded successfully.
-    var metars: [Metar] = []
+    public var metars: [Metar] = []
     /// Flag to indicate if metars are loaded.
-    var isDataLoaded: Bool = false
+    public var isDataLoaded: Bool = false
 
     /// Dependency injection for URLSession
     private let session: URLSession
@@ -83,16 +83,16 @@ public class MetarLoader : NSObject {
     private var buffer: String = ""
     private var parsingErrorMessage: String = ""
 
-    var delegate: MetarLoaderDelegate?
+    public var delegate: MetarLoaderDelegate?
 
-    init(forIcaoId id: String, session: URLSession = .shared) {
+    public init(forIcaoId id: String, session: URLSession = .shared) {
         self.id = id
         self.session = session
 
         super.init()
     }
 
-    func getData() {
+    public func getData() {
         guard let url = URL(string: "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=\(id)&hoursBeforeNow=2") else {
             print("Invalid URL.")
             return
