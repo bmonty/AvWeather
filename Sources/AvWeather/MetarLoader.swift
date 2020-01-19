@@ -19,40 +19,40 @@ public enum skyCoverConditions: String {
 /// `base` is the cloud base height in AGL.  If `skyCover` is "CLR" then `base` is 0.
 public struct SkyCondition {
     /// Reported sky cover (i.e. CLR, FEW, SCT, OVC, etc.).
-    let skyCover: skyCoverConditions
+    public let skyCover: skyCoverConditions
     /// Sky cover base height in AGL.
-    let base: Int
+    public let base: Int
 }
 
 /// Structure to hold Metar data.
 public struct Metar {
-    var rawText: String = ""
-    var stationId: String = ""
-    var observationTime: Date? = nil
-    var latitude: Float = Float.nan
-    var longitude: Float = Float.nan
-    var tempC: Float = Float.nan
-    var dewpointC: Float = Float.nan
-    var windDirDegrees: Int = Int.max
-    var windSpeed: Int = Int.max
-    var windGust: Int = Int.max
-    var visibility: Float = Float.nan
-    var altimeter: Float = Float.nan
-    var seaLevelPressure: Float = Float.nan
-    var skyCondition: [SkyCondition] = []
-    var flightCategory: String = ""
-    var threeHourPressureTendency: Float = Float.nan
+    public var rawText: String = ""
+    public var stationId: String = ""
+    public var observationTime: Date? = nil
+    public var latitude: Float = Float.nan
+    public var longitude: Float = Float.nan
+    public var tempC: Float = Float.nan
+    public var dewpointC: Float = Float.nan
+    public var windDirDegrees: Int = Int.max
+    public var windSpeed: Int = Int.max
+    public var windGust: Int = Int.max
+    public var visibility: Float = Float.nan
+    public var altimeter: Float = Float.nan
+    public var seaLevelPressure: Float = Float.nan
+    public var skyCondition: [SkyCondition] = []
+    public var flightCategory: String = ""
+    public var threeHourPressureTendency: Float = Float.nan
 }
 
 public struct MetarLoaderError: Error {
-    enum ErrorKind {
+    public enum ErrorKind {
         case invalidIcaoId
         case serverError
         case parseError
     }
 
-    let message: String
-    let kind: ErrorKind
+    public let message: String
+    public let kind: ErrorKind
 }
 
 public protocol MetarLoaderDelegate {
