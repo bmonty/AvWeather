@@ -82,6 +82,7 @@ public class MetarLoader : NSObject {
     private var currentItem: Metar?
     private var buffer: String = ""
     private var parsingErrorMessage: String = ""
+    private var parsingErrorType: MetarLoaderError.ErrorKind? = nil
 
     public var delegate: MetarLoaderDelegate?
 
@@ -123,12 +124,14 @@ public class MetarLoader : NSObject {
                 xmlParser.delegate = self
                 if !xmlParser.parse() {
                     var message = ""
+                    var type: MetarLoaderError.ErrorKind = .parseError
                     if self.parsingErrorMessage != "" {
                         message = self.parsingErrorMessage
+                        type = .invalidIcaoId
                     } else {
                         message = xmlParser.parserError?.localizedDescription ?? "Failed to parse METAR XML."
                     }
-                    let error = MetarLoaderError(message: message, kind: .parseError)
+                    let error = MetarLoaderError(message: message, kind: type)
                     self.handleSessionError(error)
                     return
                 }
@@ -162,6 +165,7 @@ extension MetarLoader: XMLParserDelegate {
 
             if count == 0 {
                 self.parsingErrorMessage = "Invalid ICAO ID."
+                self.parsingErrorType = .invalidIcaoId
                 parser.abortParsing()
             }
         }
