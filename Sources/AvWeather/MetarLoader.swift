@@ -82,15 +82,20 @@ public protocol MetarLoaderDelegate: AnyObject {
 
 }
 
-public class MetarLoader : NSObject {
+public class MetarLoader: NSObject, ObservableObject {
 
+    // MARK: Published Variables
+    /// Set to array of `Metar` if data is loaded successfully.
+    @Published public var metars: [Metar] = []
+    /// Flag to indicate if metars are loaded.
+    @Published public var isDataLoaded: Bool = false
+
+    // MARK: Public Variables
     /// Station ICAO ID for this MetarLoader.
     public let id: String
-    /// Set to array of `Metar` if data is loaded successfully.
-    public var metars: [Metar] = []
-    /// Flag to indicate if metars are loaded.
-    public var isDataLoaded: Bool = false
+    public weak var delegate: MetarLoaderDelegate?
 
+    // MARK: Private Variables
     /// Dependency injection for URLSession
     private let session: URLSession
 
@@ -106,8 +111,6 @@ public class MetarLoader : NSObject {
     private var buffer: String = ""
     private var parsingErrorMessage: String = ""
     private var parsingErrorType: MetarLoaderError.ErrorKind? = nil
-
-    public weak var delegate: MetarLoaderDelegate?
 
     public init(forIcaoId id: String, session: URLSession = .shared) {
         self.id = id
