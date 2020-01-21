@@ -17,15 +17,16 @@ class AvWeatherClient: MetarLoaderDelegate {
 		metarLoader.getData()
 	}
 
-	public func dataLoaded(_ metarLoader: MetarLoader, error: Error?) {
-		if let err = error as? MetarLoaderError {
-			print("Error: \(err.message)")
-			return
-		}
-
+    // called when METAR data has been successfully loaded
+    func metarLoaded(_ metarLoader: MetarLoader, didDownloadMetars metars: [Metar]) {
 		let metar = metarLoader.metars[0]
 		print("\(metar.rawText)")
 	}
+    
+    // called if there was an error loading or parsing METAR data
+    func metarLoaded(_ metarLoader: MetarLoader, didFailDownloadWithError error: MetarLoaderError) {
+        print ("Error loading METAR: \(error.message)")
+    }
 
 }
 ```
