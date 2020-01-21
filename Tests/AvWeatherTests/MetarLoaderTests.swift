@@ -39,17 +39,25 @@ class MetarLoaderSpyDelegate: MetarLoaderDelegate {
     var error: MetarLoaderError?
     var asyncExpectation: XCTestExpectation?
 
-    func dataLoaded(_ metarLoader: MetarLoader, error: Error?) {
+    func metarLoaded(_ metarLoader: MetarLoader, didDownloadMetars metars: [Metar]) {
         guard let expectation = asyncExpectation else {
             XCTFail("MetarLoaderSpyDelegate was not set up correctly. Missing XCTExpectation reference.")
             return
         }
 
         self.result = metarLoader
-        self.error = error as? MetarLoaderError
         expectation.fulfill()
     }
 
+    func metarLoaded(_ metarLoader: MetarLoader, didFailDownloadWithError error: MetarLoaderError) {
+        guard let expectation = asyncExpectation else {
+            XCTFail("MetarLoaderSpyDelegate was not set up correctly. Missing XCTExpectation reference.")
+            return
+        }
+
+        self.error = error
+        expectation.fulfill()
+    }
 }
 
 final class MetarLoaderTests: XCTestCase {
@@ -85,7 +93,7 @@ final class MetarLoaderTests: XCTestCase {
                 }
 
                 guard let result = spyDelegate.result else {
-                    XCTFail("Expected delegate to be called")
+                    XCTFail("Expected result to be set.")
                     return
                 }
 
@@ -147,17 +155,11 @@ final class MetarLoaderTests: XCTestCase {
                     XCTFail("waitForExpectations error occurred: \(error)")
                 }
 
-                guard let result = spyDelegate.result else {
-                    XCTFail("Expected delegate to be called")
-                    return
-                }
-
                 guard let metarError = spyDelegate.error else {
                     XCTFail("Expected error to be set")
                     return
                 }
 
-                XCTAssert(result.id == "KXXX")
                 XCTAssert(metarError.message == "Invalid ICAO ID.")
                 XCTAssert(metarError.kind == .invalidIcaoId)
             }

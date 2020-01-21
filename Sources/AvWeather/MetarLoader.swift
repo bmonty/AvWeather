@@ -47,16 +47,39 @@ public struct Metar {
 public struct MetarLoaderError: Error {
     public enum ErrorKind {
         case invalidIcaoId
+        case invalidURL
         case serverError
         case parseError
+        case genericError
     }
 
     public let message: String
     public let kind: ErrorKind
 }
 
-public protocol MetarLoaderDelegate {
-    func dataLoaded(_ metarLoader: MetarLoader, error: Error?)
+/**
+ Protocol for delegates of MetarLoader.
+ */
+public protocol MetarLoaderDelegate: AnyObject {
+
+    /**
+     Notifies the delegate when METAR data has been succesfully loaded.
+
+     - parameters:
+        - metarLoader: The `MetarLoader` object informing the delegate of the event.
+        - metars: An array of `Metar` with the new data.
+     */
+    func metarLoaded(_ metarLoader: MetarLoader, didDownloadMetars metars: [Metar])
+
+    /**
+     Notifies the delegate there was an error in loading METAR data.
+
+     - parameters:
+        - metarLoader: The `MetarLoader` object informing the delegate of the event.
+        - error: A `MetarLoaderError` object with error details.
+     */
+    func metarLoaded(_ metarLoader: MetarLoader, didFailDownloadWithError error: MetarLoaderError)
+
 }
 
 public class MetarLoader : NSObject {
@@ -84,7 +107,7 @@ public class MetarLoader : NSObject {
     private var parsingErrorMessage: String = ""
     private var parsingErrorType: MetarLoaderError.ErrorKind? = nil
 
-    public var delegate: MetarLoaderDelegate?
+    public weak var delegate: MetarLoaderDelegate?
 
     public init(forIcaoId id: String, session: URLSession = .shared) {
         self.id = id
@@ -95,7 +118,8 @@ public class MetarLoader : NSObject {
 
     public func getData() {
         guard let url = URL(string: "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=\(id)&hoursBeforeNow=2") else {
-            print("Invalid URL.")
+            let metarError = MetarLoaderError(message: "Invalid URL.", kind: .invalidURL)
+            self.handleSessionError(metarError)
             return
         }
 
@@ -105,15 +129,21 @@ public class MetarLoader : NSObject {
                 fatalError("Can't get reference to self in URLSession callback.")
             }
 
-            if error != nil,
-                let error = error {
-                self.handleSessionError(error)
+            if error != nil {
+                let metarError = MetarLoaderError(message: error?.localizedDescription ?? "Unknown error.", kind: .serverError)
+                self.handleSessionError(metarError)
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse,
-                (200...299).contains(httpResponse.statusCode) else {
-                    let error = MetarLoaderError(message: "Server error trying to load METAR data.", kind: .serverError)
+            guard let httpResponse = response as? HTTPURLResponse else {
+                let metarError = MetarLoaderError(message: "Can't get HTTP response info.", kind: .genericError)
+                self.handleSessionError(metarError)
+                return
+            }
+
+            // check server status code, it's an error if it's not in the 200 range
+            if !(200...299).contains(httpResponse.statusCode) {
+                let error = MetarLoaderError(message: "Server returned status code \(httpResponse.statusCode).", kind: .serverError)
                 self.handleSessionError(error)
                 return
             }
@@ -136,19 +166,20 @@ public class MetarLoader : NSObject {
                     return
                 }
 
+                // update attributes and notify delegate
                 self.isDataLoaded = true
-                self.delegate?.dataLoaded(self, error: nil)
+                self.delegate?.metarLoaded(self, didDownloadMetars: self.metars)
                 return
             } else {
-                let error = MetarLoaderError(message: "Received bad data from server.", kind: .serverError)
+                let error = MetarLoaderError(message: "Received non-XML data from server.", kind: .serverError)
                 self.handleSessionError(error)
                 return
             }
         }.resume()
     }
 
-    private func handleSessionError(_ error: Error) {
-        self.delegate?.dataLoaded(self, error: error)
+    private func handleSessionError(_ error: MetarLoaderError) {
+        self.delegate?.metarLoaded(self, didFailDownloadWithError: error)
     }
 
 }
@@ -160,16 +191,21 @@ extension MetarLoader: XMLParserDelegate {
             guard let strCount = attributeDict["num_results"],
                 let count = Int(strCount) else {
                 self.parsingErrorMessage = "Failed to parse METAR XML."
+                self.parsingErrorType = .parseError
+                parser.abortParsing()
                 return
             }
 
+            // ADDS will return 0 results for an invalid airport id
             if count == 0 {
                 self.parsingErrorMessage = "Invalid ICAO ID."
                 self.parsingErrorType = .invalidIcaoId
                 parser.abortParsing()
+                return
             }
         }
 
+        // found start of the METAR section
         if elementName == "METAR" {
             currentState = .metar
             currentItem = Metar()
@@ -179,6 +215,7 @@ extension MetarLoader: XMLParserDelegate {
             return
         }
 
+        // special case for the METAR.sky_condition element
         if currentState == .metar && elementName == "sky_condition" {
             if let skyCover = attributeDict["sky_cover"] {
                 if skyCover == "CLR" {
@@ -191,6 +228,7 @@ extension MetarLoader: XMLParserDelegate {
             return
         }
 
+        // this is a new element under METAR, so clear the data buffer
         if currentState == .metar {
             buffer = ""
             return
@@ -198,6 +236,7 @@ extension MetarLoader: XMLParserDelegate {
     }
 
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        // found end of the METAR section, so save the data
         if elementName == "METAR" {
             #if DEBUG
             print(currentItem!)
@@ -208,6 +247,7 @@ extension MetarLoader: XMLParserDelegate {
             return
         }
 
+        // found end of an element under METAR, so add the data to currentItem
         if currentState == .metar {
             switch elementName {
             case "raw_text":
@@ -296,6 +336,7 @@ extension MetarLoader: XMLParserDelegate {
         }
     }
 
+    // get data from an element
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
         buffer += string
     }
