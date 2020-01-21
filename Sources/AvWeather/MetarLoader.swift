@@ -115,6 +115,8 @@ public class MetarLoader: NSObject, ObservableObject {
     public init(forIcaoId id: String, session: URLSession = .shared) {
         self.id = id
         self.session = session
+
+        super.init()
     }
 
     public func getData() {
