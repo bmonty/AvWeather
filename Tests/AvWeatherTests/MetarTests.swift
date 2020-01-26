@@ -34,7 +34,7 @@ class URLProtocolMetarMock: URLProtocol {
 
 }
 
-final class MetarLoaderTests: XCTestCase {
+final class MetarTests: XCTestCase {
 
     func testMetarLoadSuccess() {
         let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
