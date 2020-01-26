@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MetarRequest: NSObject, ADDSRequest {
+public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
 
     public typealias Response = [Metar]
 
@@ -323,10 +323,4 @@ public class MetarRequest: NSObject, ADDSRequest {
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
         buffer += string
     }
-}
-
-extension MetarRequest: XMLParserDelegate {
-
-
-
 }

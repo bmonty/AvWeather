@@ -124,7 +124,7 @@ public struct Metar: Codable {
     /// The elevation of the station that reported this METAR. (meters)
     public var stationElevation: Double
 
-    init() {
+    public init() {
         self.rawText = ""
         self.stationId = ""
         self.observationTime = Date.distantPast

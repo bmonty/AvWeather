@@ -52,7 +52,7 @@ public class ADDSClient {
     }
 
     /// Creates a URL for a request to the ADDS data server.
-    public func getUrl<T: ADDSRequest>(for request: T) -> URL {
+    private func getUrl<T: ADDSRequest>(for request: T) -> URL {
         guard let baseURL = URL(string: addsUrlString) else {
             fatalError("Can't create URL to contact ADDS server.")
         }
