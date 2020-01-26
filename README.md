@@ -9,7 +9,7 @@ import AvWeather
 
 let avWeatherClient = ADDSClient()
 
-// send a request to METAR data for Boston Logan Airport (KBOS)
+// send a request for METAR data for Boston Logan Airport (KBOS)
 avWeatherClient.send(MetarRequest(forStation: "KBOS")) { response in 
     switch response {
     case .success(let metars):
