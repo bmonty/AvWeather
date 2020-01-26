@@ -7,26 +7,18 @@ AvWeather is a Swift package allowing you to retrieve and use data from [aviatio
 ```swift
 import AvWeather
 
-class AvWeatherClient: MetarLoaderDelegate {
-	
-	private var metarLoader: MetarLoader
+let avWeatherClient = ADDSClient()
 
-	init() {
-		metarLoader = MetarLoader(forIcaoId: "KBOS")
-		metarLoader.delegate = self
-		metarLoader.getData()
-	}
-
-    // called when METAR data has been successfully loaded
-    func metarLoaded(_ metarLoader: MetarLoader, didDownloadMetars metars: [Metar]) {
-		let metar = metarLoader.metars[0]
-		print("\(metar.rawText)")
-	}
-    
-    // called if there was an error loading or parsing METAR data
-    func metarLoaded(_ metarLoader: MetarLoader, didFailDownloadWithError error: MetarLoaderError) {
-        print ("Error loading METAR: \(error.message)")
+// send a request to METAR data for Boston Logan Airport (KBOS)
+avWeatherClient.send(MetarRequest(forStation: "KBOS")) { response in 
+    switch response {
+    case .success(let metars):
+        // do something with new METAR data
+        print(metars[0].rawText)
+        
+    case .failure(let error):
+        // request failed
+        print(error.localizedDescription)
     }
-
 }
 ```
