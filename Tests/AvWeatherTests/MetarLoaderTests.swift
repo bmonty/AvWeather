@@ -1,9 +1,9 @@
 import XCTest
 @testable import AvWeather
 
-class URLProtocolMetarMockSuccess: URLProtocol {
+class URLProtocolMetarMock: URLProtocol {
 
-    static var testURLs = [URL?: Data]()
+    static var testURLs = [String: Data]()
 
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -21,7 +21,8 @@ class URLProtocolMetarMockSuccess: URLProtocol {
             if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
                 self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             }
-            if let data = URLProtocolMetarMockSuccess.testURLs[url] {
+            let urlString = String(url.absoluteString.split(separator: "?")[0])
+            if let data = URLProtocolMetarMock.testURLs[urlString] {
                 self.client?.urlProtocol(self, didLoad: data)
             }
         }
@@ -33,37 +34,10 @@ class URLProtocolMetarMockSuccess: URLProtocol {
 
 }
 
-class MetarLoaderSpyDelegate: MetarLoaderDelegate {
-
-    var result: MetarLoader?
-    var error: MetarLoaderError?
-    var asyncExpectation: XCTestExpectation?
-
-    func metarLoaded(_ metarLoader: MetarLoader, didDownloadMetars metars: [Metar]) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MetarLoaderSpyDelegate was not set up correctly. Missing XCTExpectation reference.")
-            return
-        }
-
-        self.result = metarLoader
-        expectation.fulfill()
-    }
-
-    func metarLoaded(_ metarLoader: MetarLoader, didFailDownloadWithError error: MetarLoaderError) {
-        guard let expectation = asyncExpectation else {
-            XCTFail("MetarLoaderSpyDelegate was not set up correctly. Missing XCTExpectation reference.")
-            return
-        }
-
-        self.error = error
-        expectation.fulfill()
-    }
-}
-
 final class MetarLoaderTests: XCTestCase {
 
     func testMetarLoadSuccess() {
-        let url = URL(string: "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=KFME&hoursBeforeNow=2")
+        let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
 
         let sourceFile = URL(fileURLWithPath: #file)
         let directory = sourceFile.deletingLastPathComponent()
@@ -71,36 +45,36 @@ final class MetarLoaderTests: XCTestCase {
         do {
             let data = try Data(contentsOf: testDataURL)
 
-            URLProtocolMetarMockSuccess.testURLs = [url: data]
-
+            URLProtocolMetarMock.testURLs = [url: data]
             let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [URLProtocolMetarMockSuccess.self]
+            config.protocolClasses = [URLProtocolMetarMock.self]
 
             let session = URLSession(configuration: config)
 
-            let metarLoader = MetarLoader(forIcaoId: "KFME", session: session)
-            let spyDelegate = MetarLoaderSpyDelegate()
-            metarLoader.delegate = spyDelegate
+            let client = ADDSClient(session: session)
+            let request = MetarRequest(forStation: "KFME")
 
-            let expect = expectation(description: "MetarLoader calls the delegate as the result of an async method completion.")
-            spyDelegate.asyncExpectation = expect
+            let expect = expectation(description: "Got MetarRequestData")
+            var testMetars: Metar = Metar()
 
-            metarLoader.getData()
+            client.send(request) { response in
+                switch response {
+                case .success(let metars):
+                    testMetars = metars[0]
+                    expect.fulfill()
 
-            waitForExpectations(timeout: 1) { error in
-                if let error = error {
-                    XCTFail("waitForExpectations error occurred: \(error)")
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
                 }
+            }
 
-                guard let result = spyDelegate.result else {
-                    XCTFail("Expected result to be set.")
+            waitForExpectations(timeout: 2) { error in
+                if let error = error {
+                    XCTFail("MetarRequest waiting failed: \(error)")
                     return
                 }
 
-                XCTAssert(result.id == "KFME")
-                XCTAssert(result.metars.count == 2)
-
-                let metar = result.metars[0]
+                let metar = testMetars
                 XCTAssert(metar.rawText == "KFME 201348Z AUTO 33006KT 10SM CLR M04/M10 A3037 RMK AO1")
                 XCTAssert(metar.stationId == "KFME")
                 let formatter = ISO8601DateFormatter()
@@ -108,17 +82,17 @@ final class MetarLoaderTests: XCTestCase {
                 XCTAssert(metar.observationTime == date)
                 XCTAssert(metar.latitude == 39.08)
                 XCTAssert(metar.longitude == -76.77)
-                XCTAssert(metar.tempC == -4.0)
-                XCTAssert(metar.dewpointC == -10.0)
-                XCTAssert(metar.windDirDegrees == 330)
+                XCTAssert(metar.temp == -4.0)
+                XCTAssert(metar.dewpoint == -10.0)
+                XCTAssert(metar.windDirection == 330)
                 XCTAssert(metar.windSpeed == 6)
-                XCTAssert(metar.windGust == Int.max)
+                XCTAssert(metar.windGust == 0)
                 XCTAssert(metar.visibility == 10.0)
                 XCTAssert(metar.altimeter == 30.369095)
-                XCTAssert(metar.seaLevelPressure.isNaN)
+                XCTAssert(metar.seaLevelPressure == 0.0)
                 XCTAssert(metar.skyCondition.count == 1)
-                XCTAssert(metar.flightCategory == "VFR")
-                XCTAssert(metar.threeHourPressureTendency.isNaN)
+                XCTAssert(metar.flightCategory == .vfr)
+                XCTAssert(metar.threeHourPressureTendency == 0.0)
             }
         } catch {
             XCTFail("Failed to load test data: \(error)")
@@ -126,7 +100,7 @@ final class MetarLoaderTests: XCTestCase {
     }
 
     func testMetarLoadBadIcaoId() {
-        let url = URL(string: "https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=KXXX&hoursBeforeNow=2")
+        let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
 
         let sourceFile = URL(fileURLWithPath: #file)
         let directory = sourceFile.deletingLastPathComponent()
@@ -134,34 +108,35 @@ final class MetarLoaderTests: XCTestCase {
         do {
             let data = try Data(contentsOf: testDataURL)
 
-            URLProtocolMetarMockSuccess.testURLs = [url: data]
+            URLProtocolMetarMock.testURLs = [url: data]
 
             let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [URLProtocolMetarMockSuccess.self]
+            config.protocolClasses = [URLProtocolMetarMock.self]
 
             let session = URLSession(configuration: config)
 
-            let metarLoader = MetarLoader(forIcaoId: "KXXX", session: session)
-            let spyDelegate = MetarLoaderSpyDelegate()
-            metarLoader.delegate = spyDelegate
+            let client = ADDSClient(session: session)
+            let request = MetarRequest(forStation: "KXXX")
 
-            let expect = expectation(description: "MetarLoader calls the delegate as the result of an async method completion.")
-            spyDelegate.asyncExpectation = expect
+            let expect = expectation(description: "Got MetarRequestData")
+            var testError: AvWeatherError?
 
-            metarLoader.getData()
+            client.send(request) { response in
+                switch response {
+                case .success:
+                    XCTFail("Expected to get an error.")
+                case .failure(let error):
+                    testError = error as? AvWeatherError
+                    expect.fulfill()
+                }
+            }
 
             waitForExpectations(timeout: 1) { error in
                 if let error = error {
                     XCTFail("waitForExpectations error occurred: \(error)")
                 }
 
-                guard let metarError = spyDelegate.error else {
-                    XCTFail("Expected error to be set")
-                    return
-                }
-
-                XCTAssert(metarError.message == "Invalid ICAO ID.")
-                XCTAssert(metarError.kind == .invalidIcaoId)
+                XCTAssert(testError != nil)
             }
         } catch {
             XCTFail("Failed to load test data: \(error)")
