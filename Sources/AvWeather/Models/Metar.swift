@@ -55,6 +55,11 @@ public struct Metar: Codable {
         public let skyCover: SkyCoverConditions
         /// Sky cover base height in AGL.
         public let base: Int
+
+        public init(skyCover: SkyCoverConditions, base: Int) {
+            self.skyCover = skyCover
+            self.base = base
+        }
     }
 
     // MARK: Properties
