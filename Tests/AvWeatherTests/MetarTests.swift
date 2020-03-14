@@ -55,12 +55,12 @@ final class MetarTests: XCTestCase {
             let request = MetarRequest(forStation: "KFME")
 
             let expect = expectation(description: "Got MetarRequestData")
-            var testMetars: Metar = Metar()
+            var testMetars: [Metar] = []
 
             client.send(request) { response in
                 switch response {
                 case .success(let metars):
-                    testMetars = metars[0]
+                    testMetars = metars
                     expect.fulfill()
 
                 case .failure(let error):
@@ -74,7 +74,8 @@ final class MetarTests: XCTestCase {
                     return
                 }
 
-                let metar = testMetars
+                // check latest METAR is index 0, and data is correct
+                let metar = testMetars[0]
                 XCTAssert(metar.rawText == "KFME 201348Z AUTO 33006KT 10SM CLR M04/M10 A3037 RMK AO1")
                 XCTAssert(metar.stationId == "KFME")
                 let formatter = ISO8601DateFormatter()
@@ -93,6 +94,10 @@ final class MetarTests: XCTestCase {
                 XCTAssert(metar.skyCondition.count == 1)
                 XCTAssert(metar.flightCategory == .vfr)
                 XCTAssert(metar.threeHourPressureTendency == 0.0)
+
+                // check second, later METAR and make sure it's index is 1
+                let secondDate = formatter.date(from: "2020-01-20T13:27:00Z")
+                XCTAssert(testMetars[1].observationTime == secondDate)
             }
         } catch {
             XCTFail("Failed to load test data: \(error)")

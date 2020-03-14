@@ -43,13 +43,19 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
     }
 
     public func decode(with data: Data) throws -> [Metar] {
+        // parse data from ADDS and create an array of Metar structs
         let xmlParser = XMLParser.init(data: data)
         xmlParser.delegate = self
         if !xmlParser.parse() {
             throw AvWeatherError.parsing(message: parsingErrorMessage)
         }
 
-        return metars
+        // sort metars by observationTime, latest observation is first in the array
+        let sortedMetars = metars.sorted {
+            $0.observationTime > $1.observationTime
+        }
+
+        return sortedMetars
     }
 
     public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
