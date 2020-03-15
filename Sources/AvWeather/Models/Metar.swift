@@ -38,7 +38,7 @@ public struct Metar: Codable {
     }
 
     /// Structure to hold sky condition info.  If `skyCover` is "CLR" then `base` is 0.
-    public struct SkyCondition: Codable {
+    public struct SkyCondition: Codable, Identifiable {
         /// All possible values for sky cover.
         public enum SkyCoverConditions: String, Codable {
             case skc = "SKC"
@@ -51,6 +51,8 @@ public struct Metar: Codable {
             case ovx = "OVX"
         }
 
+        /// Unique ID for this object.
+        public let id = UUID()
         /// Reported sky cover (i.e. CLR, FEW, SCT, OVC, etc.).
         public let skyCover: SkyCoverConditions
         /// Sky cover base height in AGL.
