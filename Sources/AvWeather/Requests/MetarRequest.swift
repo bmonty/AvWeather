@@ -85,7 +85,7 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
                         currentItem.skyCondition.append(Metar.SkyCondition(skyCover: .clr, base: 0))
                     } else if let baseStr = attributeDict["cloud_base_ft_agl"],
                         let base = Int(baseStr) {
-                        currentItem.skyCondition.append(Metar.SkyCondition(skyCover: Metar.SkyCondition.SkyCoverConditions.init(rawValue: baseStr) ?? .skc, base: base))
+                        currentItem.skyCondition.append(Metar.SkyCondition(skyCover: Metar.SkyCondition.SkyCoverConditions.init(rawValue: skyCover) ?? .skc, base: base))
                     }
                 }
                 return
