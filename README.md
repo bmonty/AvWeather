@@ -1,6 +1,6 @@
 # AvWeather
 
-AvWeather is a Swift package allowing you to retrieve and use data from [aviationweather.com](https://www.aviationweather.com).
+AvWeather is a Swift package allowing you to retrieve and use data from [aviationweather.gov](https://www.aviationweather.gov).
 
 # Usage
 
