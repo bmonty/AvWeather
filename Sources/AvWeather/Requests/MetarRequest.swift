@@ -12,7 +12,7 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
 
     public typealias Response = [Metar]
 
-    public let stationString: String
+    public let stationString: [String]
     public let hoursBeforeNow: Int
     public var queryParams: [URLQueryItem]
 
@@ -27,14 +27,28 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
     private var metars: [Metar] = []
 
     public init(forStation stationString: String, hoursBeforeNow: Int = 2, mostRecent: Bool = false) {
+        self.stationString = [stationString]
+        self.hoursBeforeNow = hoursBeforeNow
 
+        self.queryParams = [
+            URLQueryItem(name: "dataSource", value: "metars"),
+            URLQueryItem(name: "hoursBeforeNow", value: String(hoursBeforeNow)),
+            URLQueryItem(name: "stationString", value: self.stationString.joined(separator: ",")),
+        ]
+
+        if mostRecent {
+            queryParams.append(URLQueryItem(name: "mostRecent", value: "true"))
+        }
+    }
+
+    public init(forStations stationString: [String], hoursBeforeNow: Int = 2, mostRecent: Bool = false) {
         self.stationString = stationString
         self.hoursBeforeNow = hoursBeforeNow
 
         self.queryParams = [
             URLQueryItem(name: "dataSource", value: "metars"),
             URLQueryItem(name: "hoursBeforeNow", value: String(hoursBeforeNow)),
-            URLQueryItem(name: "stationString", value: self.stationString),
+            URLQueryItem(name: "stationString", value: self.stationString.joined(separator: ",")),
         ]
 
         if mostRecent {

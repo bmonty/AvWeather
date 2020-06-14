@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XML-Schema-instance" version="1.2" xsi:noNamespaceSchemaLocation="http://aviationweather.gov/adds/schema/metar1_2.xsd">
+  <request_index>155710586</request_index>
+  <data_source name="metars" />
+  <request type="retrieve" />
+  <errors />
+  <warnings />
+  <time_taken_ms>5</time_taken_ms>
+  <data num_results="20">
+    <METAR>
+      <raw_text>KFME 142035Z AUTO 10008KT 10SM CLR 22/09 A3032 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T20:35:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>9.0</dewpoint_c>
+      <wind_dir_degrees>100</wind_dir_degrees>
+      <wind_speed_kt>8</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.318897</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 142015Z AUTO 00000KT 10SM CLR 22/10 A3032 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T20:15:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>10.0</dewpoint_c>
+      <wind_dir_degrees>0</wind_dir_degrees>
+      <wind_speed_kt>0</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.318897</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141955Z AUTO 10004KT 10SM SCT100 23/11 A3032 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T19:55:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>23.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>100</wind_dir_degrees>
+      <wind_speed_kt>4</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.318897</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="10000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KBWI 141954Z 05005KT 10SM FEW060 SCT110 SCT250 24/09 A3030 RMK AO2 SLP259 T02390094</raw_text>
+      <station_id>KBWI</station_id>
+      <observation_time>2020-06-14T19:54:00Z</observation_time>
+      <latitude>39.17</latitude>
+      <longitude>-76.68</longitude>
+      <temp_c>23.9</temp_c>
+      <dewpoint_c>9.4</dewpoint_c>
+      <wind_dir_degrees>50</wind_dir_degrees>
+      <wind_speed_kt>5</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.301182</altim_in_hg>
+      <sea_level_pressure_mb>1025.9</sea_level_pressure_mb>
+      <quality_control_flags>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="FEW" cloud_base_ft_agl="6000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="11000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="25000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>59.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFDK 141947Z 01007KT 10SM BKN065 BKN080 OVC120 22/11 A3033</raw_text>
+      <station_id>KFDK</station_id>
+      <observation_time>2020-06-14T19:47:00Z</observation_time>
+      <latitude>39.42</latitude>
+      <longitude>-77.37</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>10</wind_dir_degrees>
+      <wind_speed_kt>7</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="6500" />
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="8000" />
+      <sky_condition sky_cover="OVC" cloud_base_ft_agl="12000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>92.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141935Z AUTO 10008KT 10SM BKN110 22/11 A3033 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T19:35:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>100</wind_dir_degrees>
+      <wind_speed_kt>8</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="11000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141915Z AUTO 09005KT 10SM BKN110 22/12 A3033 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T19:15:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>12.0</dewpoint_c>
+      <wind_dir_degrees>90</wind_dir_degrees>
+      <wind_speed_kt>5</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="11000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141855Z AUTO 07004KT 10SM CLR 22/12 A3033 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T18:55:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>12.0</dewpoint_c>
+      <wind_dir_degrees>70</wind_dir_degrees>
+      <wind_speed_kt>4</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>SPECI</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KBWI 141854Z COR 10009KT 10SM FEW060 SCT150 SCT250 24/09 A3031 RMK AO2 SLP261 T02390089</raw_text>
+      <station_id>KBWI</station_id>
+      <observation_time>2020-06-14T18:54:00Z</observation_time>
+      <latitude>39.17</latitude>
+      <longitude>-76.68</longitude>
+      <temp_c>23.9</temp_c>
+      <dewpoint_c>8.9</dewpoint_c>
+      <wind_dir_degrees>100</wind_dir_degrees>
+      <wind_speed_kt>9</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.31004</altim_in_hg>
+      <sea_level_pressure_mb>1026.1</sea_level_pressure_mb>
+      <quality_control_flags>
+        <corrected>TRUE</corrected>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="FEW" cloud_base_ft_agl="6000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="15000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="25000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>59.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFDK 141847Z 02007KT 10SM OVC095 19/11 A3034</raw_text>
+      <station_id>KFDK</station_id>
+      <observation_time>2020-06-14T18:47:00Z</observation_time>
+      <latitude>39.42</latitude>
+      <longitude>-77.37</longitude>
+      <temp_c>19.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>20</wind_dir_degrees>
+      <wind_speed_kt>7</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.339567</altim_in_hg>
+      <sky_condition sky_cover="OVC" cloud_base_ft_agl="9500" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>92.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141835Z AUTO 07005KT 10SM CLR 22/12 A3033 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T18:35:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>12.0</dewpoint_c>
+      <wind_dir_degrees>70</wind_dir_degrees>
+      <wind_speed_kt>5</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141815Z AUTO 13006KT 10SM CLR 22/12 A3034 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T18:15:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>22.0</temp_c>
+      <dewpoint_c>12.0</dewpoint_c>
+      <wind_dir_degrees>130</wind_dir_degrees>
+      <wind_speed_kt>6</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.339567</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141755Z AUTO 13006KT 10SM CLR 21/10 A3034 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T17:55:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>21.0</temp_c>
+      <dewpoint_c>10.0</dewpoint_c>
+      <wind_dir_degrees>130</wind_dir_degrees>
+      <wind_speed_kt>6</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.339567</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KBWI 141754Z 08006KT 10SM FEW060 SCT150 SCT250 23/09 A3032 RMK AO2 SLP265 T02330094 10233 20167 58010</raw_text>
+      <station_id>KBWI</station_id>
+      <observation_time>2020-06-14T17:54:00Z</observation_time>
+      <latitude>39.17</latitude>
+      <longitude>-76.68</longitude>
+      <temp_c>23.3</temp_c>
+      <dewpoint_c>9.4</dewpoint_c>
+      <wind_dir_degrees>80</wind_dir_degrees>
+      <wind_speed_kt>6</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.318897</altim_in_hg>
+      <sea_level_pressure_mb>1026.5</sea_level_pressure_mb>
+      <quality_control_flags>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="FEW" cloud_base_ft_agl="6000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="15000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="25000" />
+      <flight_category>VFR</flight_category>
+      <three_hr_pressure_tendency_mb>-1.0</three_hr_pressure_tendency_mb>
+      <maxT_c>23.3</maxT_c>
+      <minT_c>16.7</minT_c>
+      <metar_type>SPECI</metar_type>
+      <elevation_m>59.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFDK 141747Z 02007KT 10SM BKN095 19/10 A3034</raw_text>
+      <station_id>KFDK</station_id>
+      <observation_time>2020-06-14T17:47:00Z</observation_time>
+      <latitude>39.42</latitude>
+      <longitude>-77.37</longitude>
+      <temp_c>19.0</temp_c>
+      <dewpoint_c>10.0</dewpoint_c>
+      <wind_dir_degrees>20</wind_dir_degrees>
+      <wind_speed_kt>7</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.339567</altim_in_hg>
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="9500" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>92.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141735Z AUTO 07006KT 10SM CLR 21/11 A3035 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T17:35:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>21.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>70</wind_dir_degrees>
+      <wind_speed_kt>6</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.351377</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141715Z AUTO 00000KT 10SM CLR 21/12 A3035 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T17:15:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>21.0</temp_c>
+      <dewpoint_c>12.0</dewpoint_c>
+      <wind_dir_degrees>0</wind_dir_degrees>
+      <wind_speed_kt>0</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.351377</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFME 141655Z AUTO 04007KT 10SM CLR 21/11 A3035 RMK AO1</raw_text>
+      <station_id>KFME</station_id>
+      <observation_time>2020-06-14T16:55:00Z</observation_time>
+      <latitude>39.08</latitude>
+      <longitude>-76.77</longitude>
+      <temp_c>21.0</temp_c>
+      <dewpoint_c>11.0</dewpoint_c>
+      <wind_dir_degrees>40</wind_dir_degrees>
+      <wind_speed_kt>7</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.351377</altim_in_hg>
+      <quality_control_flags>
+        <auto>TRUE</auto>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="CLR" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>46.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KBWI 141654Z VRB04KT 10SM SCT150 SCT250 22/09 A3033 RMK AO2 SLP268 T02220094</raw_text>
+      <station_id>KBWI</station_id>
+      <observation_time>2020-06-14T16:54:00Z</observation_time>
+      <latitude>39.17</latitude>
+      <longitude>-76.68</longitude>
+      <temp_c>22.2</temp_c>
+      <dewpoint_c>9.4</dewpoint_c>
+      <wind_dir_degrees>0</wind_dir_degrees>
+      <wind_speed_kt>4</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.33071</altim_in_hg>
+      <sea_level_pressure_mb>1026.8</sea_level_pressure_mb>
+      <quality_control_flags>
+        <auto_station>TRUE</auto_station>
+      </quality_control_flags>
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="15000" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="25000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>59.0</elevation_m>
+    </METAR>
+    <METAR>
+      <raw_text>KFDK 141647Z 03004KT 10SM BKN095 OVC120 18/09 A3036</raw_text>
+      <station_id>KFDK</station_id>
+      <observation_time>2020-06-14T16:47:00Z</observation_time>
+      <latitude>39.42</latitude>
+      <longitude>-77.37</longitude>
+      <temp_c>18.0</temp_c>
+      <dewpoint_c>9.0</dewpoint_c>
+      <wind_dir_degrees>30</wind_dir_degrees>
+      <wind_speed_kt>4</wind_speed_kt>
+      <visibility_statute_mi>10.0</visibility_statute_mi>
+      <altim_in_hg>30.360237</altim_in_hg>
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="9500" />
+      <sky_condition sky_cover="OVC" cloud_base_ft_agl="12000" />
+      <flight_category>VFR</flight_category>
+      <metar_type>METAR</metar_type>
+      <elevation_m>92.0</elevation_m>
+    </METAR>
+  </data>
+</response>
