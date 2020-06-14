@@ -36,7 +36,7 @@ class URLProtocolMetarMock: URLProtocol {
 
 final class MetarTests: XCTestCase {
 
-    func testMetarLoadSuccess() {
+    func testMetarLoadSingleStation() {
         let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
 
         let sourceFile = URL(fileURLWithPath: #file)
@@ -104,6 +104,69 @@ final class MetarTests: XCTestCase {
         }
     }
 
+    func testMetarLoadMultipleStations() {
+        let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
+
+        let sourceFile = URL(fileURLWithPath: #file)
+        let directory = sourceFile.deletingLastPathComponent()
+        let testDataURL = directory.appendingPathComponent("TestData/multiple.xml")
+        do {
+            let data = try Data(contentsOf: testDataURL)
+
+            URLProtocolMetarMock.testURLs = [url: data]
+            let config = URLSessionConfiguration.ephemeral
+            config.protocolClasses = [URLProtocolMetarMock.self]
+
+            let session = URLSession(configuration: config)
+
+            let client = ADDSClient(session: session)
+            let request = MetarRequest(forStations: ["KFME", "KFDK", "KBWI"])
+
+            let expect = expectation(description: "Got MetarRequestData")
+            var testMetars: [Metar] = []
+
+            client.send(request) { response in
+                switch response {
+                case .success(let metars):
+                    testMetars = metars
+                    expect.fulfill()
+
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
+                }
+            }
+
+            waitForExpectations(timeout: 2) { error in
+                if let error = error {
+                    XCTFail("MetarRequest waiting failed: \(error)")
+                    return
+                }
+
+                XCTAssert(testMetars.count == 20)
+
+                // KFME == 12
+                var countFME = 0, countFDK = 0, countBWI = 0
+                for metar in testMetars {
+                    switch metar.stationId {
+                    case "KFME":
+                        countFME += 1
+                    case "KFDK":
+                        countFDK += 1
+                    case "KBWI":
+                        countBWI += 1
+                    default:
+                        XCTFail("Unknown station in results.")
+                    }
+                }
+                XCTAssert(countFME == 12)
+                XCTAssert(countFDK == 4)
+                XCTAssert(countBWI == 4)
+            }
+        } catch {
+            XCTFail("Failed to load test data: \(error)")
+        }
+    }
+
     func testMetarLoadBadIcaoId() {
         let url = "https://aviationweather.gov/adds/dataserver_current/httpparam"
 
@@ -149,7 +212,8 @@ final class MetarTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testMetarLoadSuccess", testMetarLoadSuccess),
+        ("testMetarLoadSingleStation", testMetarLoadSingleStation),
+        ("testMetarLoadMultipleStations", testMetarLoadMultipleStations),
         ("testMetarLoadBadIcaoId", testMetarLoadBadIcaoId),
     ]
 }
