@@ -21,4 +21,17 @@ avWeatherClient.send(MetarRequest(forStation: "KBOS")) { response in
         print(error.localizedDescription)
     }
 }
+
+// send a request for METAR data at multiple stations
+avWeatherClient.send(MetarRequest(forStations: ["KBOS", "KORD", "KLAX"])) { response in
+    switch response {
+    case .success(let metars):
+        // do something with new METAR data
+        print(metars[0].rawText)
+        
+    case .failure(let error):
+        // request failed
+        print(error.localizedDescription)
+    }
+}
 ```
