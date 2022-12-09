@@ -26,25 +26,18 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
     private var parsingErrorMessage: String = ""
     private var metars: [Metar] = []
 
-    public init(forStation stationString: String, hoursBeforeNow: Int = 2, mostRecent: Bool = false) {
-        self.stationString = [stationString]
-        self.hoursBeforeNow = hoursBeforeNow
-
-        self.queryParams = [
-            URLQueryItem(name: "dataSource", value: "metars"),
-            URLQueryItem(name: "hoursBeforeNow", value: String(hoursBeforeNow)),
-            URLQueryItem(name: "stationString", value: self.stationString.joined(separator: ",")),
-        ]
-
-        if mostRecent {
-            queryParams.append(URLQueryItem(name: "mostRecent", value: "true"))
-        }
+    public convenience init(forStation stationString: String, hoursBeforeNow: Int = 2, mostRecent: Bool = false) {
+        self.init(forStations: [stationString], hoursBeforeNow: hoursBeforeNow, mostRecent: mostRecent)
     }
 
     public init(forStations stationString: [String], hoursBeforeNow: Int = 2, mostRecent: Bool = false) {
         self.stationString = stationString
         self.hoursBeforeNow = hoursBeforeNow
 
+        /*
+         * See https://www.aviationweather.gov/dataserver/example?datatype=metar
+         * for details of possible parameters.
+         */
         self.queryParams = [
             URLQueryItem(name: "dataSource", value: "metars"),
             URLQueryItem(name: "hoursBeforeNow", value: String(hoursBeforeNow)),
@@ -52,7 +45,7 @@ public class MetarRequest: NSObject, XMLParserDelegate, ADDSRequest {
         ]
 
         if mostRecent {
-            queryParams.append(URLQueryItem(name: "mostRecent", value: "true"))
+            queryParams.append(URLQueryItem(name: "mostRecentForEachStation", value: "true"))
         }
     }
 

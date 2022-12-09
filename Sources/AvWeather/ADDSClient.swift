@@ -11,14 +11,29 @@ import Foundation
 public typealias ADDSClientCallback<T> = (Result<T, Error>) -> Void
 
 public class ADDSClient {
-
+    
     private let addsUrlString = "https://aviationweather.gov/adds/dataserver_current/httpparam"
     private let session: URLSession
-
+    
     public init(session: URLSession = .shared) {
         self.session = session
     }
-
+    
+    public func send<T: ADDSRequest>(_ request: T) async throws -> T.Response {
+        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<T.Response, Error>) in
+            
+            send(request, completion: { response in
+                switch response {
+                case .success(let objects):
+                    continuation.resume(returning: objects)
+                case .failure(let error):
+                    // request failed
+                    continuation.resume(throwing: error)
+                }
+            })
+        })
+    }
+    
     public func send<T: ADDSRequest>(_ request: T,
                                      completion: @escaping ADDSClientCallback<T.Response>) {
         let task = session.dataTask(with: getUrl(for: request)) { data, response, error in
@@ -26,17 +41,17 @@ public class ADDSClient {
                 completion(.failure(AvWeatherError.generic(message: "Can't get HTTP response info.")))
                 return
             }
-
+            
             if !(200...299).contains(httpResponse.statusCode) {
                 completion(.failure(AvWeatherError.server(message: "Got status code \(httpResponse.statusCode) from server.")))
                 return
             }
-
+            
             if httpResponse.mimeType != "text/xml" {
                 completion(.failure(AvWeatherError.server(message: "Server sent data with wrong mime type.")))
                 return
             }
-
+            
             if let data = data {
                 do {
                     let addsResponse = try request.decode(with: data)
@@ -50,23 +65,40 @@ public class ADDSClient {
         }
         task.resume()
     }
-
+    
     /// Creates a URL for a request to the ADDS data server.
     private func getUrl<T: ADDSRequest>(for request: T) -> URL {
         guard let baseURL = URL(string: addsUrlString) else {
             fatalError("Can't create URL to contact ADDS server.")
         }
-
+        
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
-
+        
         var queryItems = [
             URLQueryItem(name: "requestType", value: "retrieve"),
             URLQueryItem(name: "format", value: "xml"),
         ]
         queryItems += request.queryParams
-
+        
         components.queryItems = queryItems
         return components.url!
     }
+    
+}
 
+public extension ADDSClient {
+    
+    static func messageIn(_ error: Error) -> String {
+        guard let error = error as? AvWeatherError else {
+            return "No AvWeatherError: \(error.localizedDescription)"
+        }
+        switch error {
+        case .parsing(message: let msg):
+            return msg
+        case .server(message: let msg):
+            return msg
+        case .generic(message: let msg):
+            return msg
+        }
+    }
 }

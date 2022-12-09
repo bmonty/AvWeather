@@ -52,13 +52,14 @@ public struct Metar: Codable {
         }
 
         /// Unique ID for this object.
-        public let id = UUID()
+        public let id: UUID
         /// Reported sky cover (i.e. CLR, FEW, SCT, OVC, etc.).
         public let skyCover: SkyCoverConditions
         /// Sky cover base height in AGL.
         public let base: Int
 
         public init(skyCover: SkyCoverConditions, base: Int) {
+            self.id = UUID()
             self.skyCover = skyCover
             self.base = base
         }
