@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// A model for TAF data returned from ADDS.
 ///
 /// - SeeAlso:

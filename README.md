@@ -4,6 +4,8 @@ AvWeather is a Swift package allowing you to retrieve and use data from [aviatio
 
 # Usage
 
+(The example shows Metar, but TAF can be used as well)
+
 ```swift
 import AvWeather
 
@@ -33,5 +35,25 @@ avWeatherClient.send(MetarRequest(forStations: ["KBOS", "KORD", "KLAX"])) { resp
         // request failed
         print(error.localizedDescription)
     }
+}
+```
+## Async/Await
+
+AvWeather can also be used in Swift Async/Await concurrency schemes:
+
+(The example shows TAF, but Metar can be used as well)
+
+```
+// Instantiate a client
+let client = ADDSClient()
+// Configure the request using 1 or more stations
+let request = TAFRequest(forStations: ["ESSA", "ENGM", "GCLP", "LFPG", "KJFK", "KLAX"], mostRecent: true)
+do {
+    let tafs = try await client.send(request)
+    // do something with TAF data
+    print(tafs[0].rawText)
+} catch {
+    // An error was thrown
+    print("Error thrown getting tafs: \(ADDSClient.messageIn(error))")
 }
 ```
