@@ -8,7 +8,7 @@
 import Foundation
 
 
-/// A model for METAR data returned from ADDS.
+/// A model for METAR data returned from AWC.
 ///
 /// - SeeAlso:
 /// https://aviationweather.gov/dataserver/fields?datatype=metar

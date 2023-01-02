@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="52" translatesAutoresizingMaskIntoConstraints="NO" id="j5m-pR-iEP">
-                                <rect key="frame" x="10" y="64" width="394" height="31"/>
+                                <rect key="frame" x="10" y="64" width="394" height="104"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjt-OG-kN7">
-                                        <rect key="frame" x="0.0" y="0.0" width="96.5" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="96.5" height="104"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="Metars"/>
                                         <connections>
@@ -28,27 +29,43 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNZ-nn-0Vj">
-                                        <rect key="frame" x="148.5" y="0.0" width="97" height="31"/>
+                                        <rect key="frame" x="148.5" y="0.0" width="97" height="104"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="TAFs"/>
                                         <connections>
                                             <action selector="getTafs" destination="BYZ-38-t0r" eventType="touchUpInside" id="syO-pF-Qq9"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6U7-q3-YXO">
-                                        <rect key="frame" x="297.5" y="0.0" width="96.5" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="tinted" title="SIGMETs"/>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ung-qA-G8v">
+                                        <rect key="frame" x="297.5" y="0.0" width="96.5" height="104"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SW7-Jx-s3v">
+                                                <rect key="frame" x="0.0" y="0.0" width="96.5" height="48"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="SIGMETs (Intl.)"/>
+                                                <connections>
+                                                    <action selector="getIntlSigmets" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zvh-nc-VwP"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6U7-q3-YXO">
+                                                <rect key="frame" x="0.0" y="56" width="96.5" height="48"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="tinted" title="SIGMETs (US)"/>
+                                                <connections>
+                                                    <action selector="getUSSigmets" destination="BYZ-38-t0r" eventType="touchUpInside" id="lBl-F6-7af"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Station ICAO codes separated by comma" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sxo-w9-kzE">
-                                <rect key="frame" x="10" y="115" width="394" height="34"/>
+                                <rect key="frame" x="10" y="188" width="394" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hAL-Hr-D2N">
-                                <rect key="frame" x="10" y="219" width="394" height="633"/>
+                                <rect key="frame" x="10" y="292" width="394" height="560"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -64,13 +81,22 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="12" minValue="2" maxValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="Q2W-gB-5jB">
-                                <rect key="frame" x="8" y="169" width="398" height="31"/>
+                                <rect key="frame" x="8" y="242" width="398" height="31"/>
                                 <connections>
                                     <action selector="sliderChangedWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="aut-be-O30"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hours back: 12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dH5-V9-7ES">
-                                <rect key="frame" x="280.5" y="157" width="113.5" height="20"/>
+                                <rect key="frame" x="280.5" y="230" width="113.5" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ssE-9G-3Qs">
+                                <rect key="frame" x="365" y="267" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Most recent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22E-9y-YQE">
+                                <rect key="frame" x="265.5" y="272" width="91.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -85,17 +111,22 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="hAL-Hr-D2N" secondAttribute="bottom" constant="10" id="8HV-8d-EJ4"/>
                             <constraint firstItem="Sxo-w9-kzE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="8gP-ur-KAo"/>
                             <constraint firstItem="Sxo-w9-kzE" firstAttribute="top" secondItem="j5m-pR-iEP" secondAttribute="bottom" constant="20" id="AI4-9K-J64"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ssE-9G-3Qs" secondAttribute="trailing" id="Blr-mi-azG"/>
                             <constraint firstItem="Q2W-gB-5jB" firstAttribute="top" secondItem="dH5-V9-7ES" secondAttribute="bottom" constant="-8" id="C43-tW-lMa"/>
                             <constraint firstItem="hAL-Hr-D2N" firstAttribute="top" secondItem="Q2W-gB-5jB" secondAttribute="bottom" constant="20" id="HCc-sb-OoF"/>
+                            <constraint firstItem="22E-9y-YQE" firstAttribute="top" secondItem="Q2W-gB-5jB" secondAttribute="bottom" id="Imz-Ih-bz3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dH5-V9-7ES" secondAttribute="trailing" id="IwL-7t-lED"/>
                             <constraint firstItem="dH5-V9-7ES" firstAttribute="top" secondItem="Sxo-w9-kzE" secondAttribute="bottom" constant="8" symbolic="YES" id="Pss-zy-5zG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hAL-Hr-D2N" secondAttribute="trailing" constant="10" id="RIu-dG-96D"/>
                             <constraint firstItem="j5m-pR-iEP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="Ssb-Sm-Bjo"/>
                             <constraint firstItem="sXE-HN-xb0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="TlB-nu-mdX"/>
+                            <constraint firstItem="ssE-9G-3Qs" firstAttribute="centerY" secondItem="22E-9y-YQE" secondAttribute="centerY" id="Xnv-TS-ZvZ"/>
+                            <constraint firstItem="22E-9y-YQE" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="YFB-Vk-AvW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Sxo-w9-kzE" secondAttribute="trailing" constant="10" id="Ylc-ct-Q74"/>
                             <constraint firstItem="Q2W-gB-5jB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="ZPs-H4-3b1"/>
                             <constraint firstItem="hAL-Hr-D2N" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="d5E-we-blb"/>
                             <constraint firstItem="j5m-pR-iEP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="jMX-Wx-1Ki"/>
+                            <constraint firstItem="ssE-9G-3Qs" firstAttribute="leading" secondItem="22E-9y-YQE" secondAttribute="trailing" constant="8" id="jSm-Sg-E9I"/>
                             <constraint firstItem="hAL-Hr-D2N" firstAttribute="trailing" secondItem="sXE-HN-xb0" secondAttribute="trailing" id="khx-DP-6SJ"/>
                             <constraint firstItem="Q2W-gB-5jB" firstAttribute="top" secondItem="Sxo-w9-kzE" secondAttribute="bottom" constant="20" id="njA-Ly-DIK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Q2W-gB-5jB" secondAttribute="trailing" constant="10" id="vhG-Pb-dBf"/>
@@ -103,6 +134,7 @@
                     </view>
                     <connections>
                         <outlet property="hoursLabel" destination="dH5-V9-7ES" id="xee-ES-T1U"/>
+                        <outlet property="recentSwitch" destination="ssE-9G-3Qs" id="1lZ-PB-GuL"/>
                         <outlet property="resultView" destination="hAL-Hr-D2N" id="rCu-UI-yvM"/>
                         <outlet property="textField" destination="Sxo-w9-kzE" id="tnC-1w-CTS"/>
                     </connections>

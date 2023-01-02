@@ -8,18 +8,21 @@
 import Foundation
 
 
-public typealias ADDSClientCallback<T> = (Result<T, Error>) -> Void
+public typealias AWCClientCallback<T> = (Result<T, Error>) -> Void
 
-public class ADDSClient {
+// For backwards compatibility
+public typealias ADDSClient = AWCClient
+
+public class AWCClient {
     
-    private let addsUrlString = "https://aviationweather.gov/adds/dataserver_current/httpparam"
+    private let awcHostUrlString = "https://aviationweather.gov"
     private let session: URLSession
     
     public init(session: URLSession = .shared) {
         self.session = session
     }
     
-    public func send<T: ADDSRequest>(_ request: T) async throws -> T.Response {
+    public func send<T: AWCRequest>(_ request: T) async throws -> T.Response {
         return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<T.Response, Error>) in
             
             send(request, completion: { response in
@@ -34,8 +37,8 @@ public class ADDSClient {
         })
     }
     
-    public func send<T: ADDSRequest>(_ request: T,
-                                     completion: @escaping ADDSClientCallback<T.Response>) {
+    public func send<T: AWCRequest>(_ request: T,
+                                     completion: @escaping AWCClientCallback<T.Response>) {
         let task = session.dataTask(with: getUrl(for: request)) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(AvWeatherError.generic(message: "Can't get HTTP response info.")))
@@ -47,15 +50,16 @@ public class ADDSClient {
                 return
             }
             
-            if httpResponse.mimeType != "text/xml" {
+            if ((T.self is TAFRequest.Type || T.self is MetarRequest.Type) && httpResponse.mimeType != "text/xml") ||
+                (T.self is SigmetRequest.Type && httpResponse.mimeType != "application/json") {
                 completion(.failure(AvWeatherError.server(message: "Server sent data with wrong mime type.")))
                 return
             }
             
             if let data = data {
                 do {
-                    let addsResponse = try request.decode(with: data)
-                    completion(.success(addsResponse))
+                    let awcResponse = try request.decode(with: data)
+                    completion(.success(awcResponse))
                 } catch {
                     completion(.failure(error))
                 }
@@ -66,14 +70,15 @@ public class ADDSClient {
         task.resume()
     }
     
-    /// Creates a URL for a request to the ADDS data server.
-    private func getUrl<T: ADDSRequest>(for request: T) -> URL {
-        guard let baseURL = URL(string: addsUrlString) else {
-            fatalError("Can't create URL to contact ADDS server.")
+    /// Creates a URL for a request to the AWC data server.
+    private func getUrl<T: AWCRequest>(for request: T) -> URL {
+        guard let baseURL = URL(string: (awcHostUrlString + request.servicePath)) else {
+            fatalError("Can't create URL to contact AWC server.")
         }
         
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
         
+        //Only valid for Metar and TAF, but ignored by server for Sigmets anyway
         var queryItems = [
             URLQueryItem(name: "requestType", value: "retrieve"),
             URLQueryItem(name: "format", value: "xml"),
@@ -86,7 +91,7 @@ public class ADDSClient {
     
 }
 
-public extension ADDSClient {
+public extension AWCClient {
     
     static func messageIn(_ error: Error) -> String {
         guard let error = error as? AvWeatherError else {

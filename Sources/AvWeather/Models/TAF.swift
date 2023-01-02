@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A model for TAF data returned from ADDS.
+/// A model for TAF data returned from AWC.
 ///
 /// - SeeAlso:
 /// https://aviationweather.gov/dataserver/fields?datatype=taf

@@ -25,7 +25,7 @@ class TAFTests: XCTestCase {
 
             let session = URLSession(configuration: config)
 
-            let client = ADDSClient(session: session)
+            let client = AWCClient(session: session)
             let request = TAFRequest(forStation: "PHTO")
 
             let expect = expectation(description: "Got TAFRequestData")
@@ -141,7 +141,7 @@ class TAFTests: XCTestCase {
     
     func testAsyncTAF() async throws {
         
-        let client = ADDSClient()
+        let client = AWCClient()
         //These 6 stations should always hava TAF available...
         let request = TAFRequest(forStations: ["ESSA", "ENGM", "GCLP", "LFPG", "KJFK", "KLAX"], mostRecent: true)
 
@@ -149,7 +149,7 @@ class TAFTests: XCTestCase {
             let tafs = try await client.send(request)
             XCTAssert(tafs.count == 6, "Error getting tafs")
         } catch {
-            XCTFail("Error thrown getting tafs: \(ADDSClient.messageIn(error))")
+            XCTFail("Error thrown getting tafs: \(AWCClient.messageIn(error))")
         }
     }
 }

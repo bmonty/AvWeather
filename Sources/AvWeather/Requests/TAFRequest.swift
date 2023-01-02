@@ -8,9 +8,10 @@
 import Foundation
 
 
-public class TAFRequest: NSObject, XMLParserDelegate, ADDSRequest {
+public class TAFRequest: NSObject, XMLParserDelegate, AWCRequest {
     
     public typealias Response = [TAF]
+    public var servicePath: String = "/adds/dataserver_current/httpparam"
     
     public let stationString: [String]
     public let hoursBeforeNow: Int
@@ -47,12 +48,12 @@ public class TAFRequest: NSObject, XMLParserDelegate, ADDSRequest {
         ]
         
         if mostRecent {
-            queryParams.append(URLQueryItem(name: "mostRecentForEachStation", value: "constraint"))
+            queryParams.append(URLQueryItem(name: "mostRecentForEachStation", value: "true")) //Documentation at AWC calls for "constraint", but that option fails sometimes.
         }
     }
     
     public func decode(with data: Data) throws -> [TAF] {
-        // parse data from ADDS and create an array of TAF structs
+        // parse data from AWC and create an array of TAF structs
         let xmlParser = XMLParser.init(data: data)
         xmlParser.delegate = self
         if !xmlParser.parse() {
@@ -79,10 +80,11 @@ public class TAFRequest: NSObject, XMLParserDelegate, ADDSRequest {
                       return
                   }
             
-            // ADDS will return 0 results with an invalid station string
-            if count == 0 {
+            // AWC will return 0 results with an invalid station string (or no string)
+            guard count > 0 else {
                 parsingErrorMessage = "Invalid station string."
                 parser.abortParsing()
+                return
             }
             
         case "TAF":
