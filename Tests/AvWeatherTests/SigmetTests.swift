@@ -49,7 +49,7 @@ class SigmetTests: XCTestCase {
                 }
 
                 // check data
-                XCTAssert(testSigmets.count == 74, "Wrong number of Sigmets")
+                XCTAssert(testSigmets.count == 75, "Wrong number of Sigmets")
                 
                 let sigmet = testSigmets.first(where: { $0.id == "1274007"} )! //First in json file, not in sorted sigmets.
                 
@@ -72,7 +72,9 @@ class SigmetTests: XCTestCase {
                 XCTAssert(sigmet.properties.rawSigmet == sigmet.text)
                 XCTAssert(sigmet.properties.rawAirSigmet == nil)
                 XCTAssert(sigmet.geometry?.type == .polygon)
-                XCTAssert(sigmet.geometry?.coordinates[0].count == 37)
+                let one = sigmet.geometry?.coordinates
+                let polygon = one?.first?.getCoords as? [[Double]]
+                XCTAssert(polygon?.count == 37)
             }
         } catch {
             XCTFail("Failed to load test data: \(error)")
@@ -139,7 +141,7 @@ class SigmetTests: XCTestCase {
                 XCTAssert(sigmet.properties.rawSigmet == nil)
                 XCTAssert(sigmet.properties.rawAirSigmet == sigmet.text)
                 XCTAssert(sigmet.geometry?.type == .polygon)
-                XCTAssert(sigmet.geometry?.coordinates[0].count == 5)
+                XCTAssert((sigmet.geometry?.coordinates[0].getCoords as! [[Double]]).count == 5)
             }
         } catch {
             XCTFail("Failed to load test data: \(error)")

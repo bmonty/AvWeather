@@ -55,6 +55,7 @@ public struct Sigmet: Codable {
         /// ISO 8601 formatted date and time when SIGMET ends
         public let validTimeTo: Date?
         /// hazard qualifier such as ISOL (isolated), SEV (severe), EMBD (embedded), etc
+        ///  (May sometimes contain other strings)
         public let qualifier: String?
         ///Geometry of region (UNK if unable to decode from SIGMET).
         public let geometryType: GeoType?
@@ -125,6 +126,7 @@ public struct Sigmet: Codable {
         public enum GeoType: String, Codable {
             case area = "AREA"
             case line = "LINE"
+            case point = "POINT"
             case unknown = "UNK"
         }
         
@@ -154,20 +156,25 @@ public struct Sigmet: Codable {
     public struct SigmetGeometry: Codable {
         
         public let type: SigmetGeometryType
-        public let coordinates: [[Coordinate]]
+        public let coordinates: [Coordinate]
         
         public enum Coordinate: Codable {
-            case double(Double)
-            case doubleArray([Double])
+            case point(latlong: Double)
+            case line(latlongPair: [Double])
+            case polygon(latlongPairs: [[Double]])
             
             public init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
+                if let x = try? container.decode([[Double]].self) {
+                    self = .polygon(latlongPairs: x)
+                    return
+                }
                 if let x = try? container.decode([Double].self) {
-                    self = .doubleArray(x)
+                    self = .line(latlongPair: x)
                     return
                 }
                 if let x = try? container.decode(Double.self) {
-                    self = .double(x)
+                    self = .point(latlong: x)
                     return
                 }
                 throw DecodingError.typeMismatch(Coordinate.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Coordinate"))
@@ -176,16 +183,32 @@ public struct Sigmet: Codable {
             public func encode(to encoder: Encoder) throws {
                 var container = encoder.singleValueContainer()
                 switch self {
-                case .double(let x):
+                case .point(let x):
                     try container.encode(x)
-                case .doubleArray(let x):
+                case .line(let x):
                     try container.encode(x)
+                case .polygon(let x):
+                    try container.encode(x)
+                }
+            }
+            
+            var getCoords: Any {
+                switch self {
+                case .point(latlong: let value):
+                    return value
+                case .line(latlongPair: let value):
+                    return value
+                case .polygon(latlongPairs: let value):
+                    return value
                 }
             }
         }
         
+        
+        
         public enum SigmetGeometryType: String, Codable {
-            case lineString = "LineString"
+            case line = "LineString"
+            case point = "Point"
             case polygon = "Polygon"
         }
     }

@@ -66,6 +66,33 @@
     }
   },
   { "type": "Feature",
+    "id": "1348562",
+    "properties": {
+      "data": "ISIGMET",
+      "icaoId": "RUSP",
+      "firId": "ULLL",
+      "firName": "ULLL SANKT-PETERBURG",
+      "seriesId": "12",
+      "hazard": "ICE",
+      "validTimeFrom": "2023-01-14T15:00:00Z",
+      "validTimeTo": "2023-01-14T18:00:00Z",
+      "qualifier": "SEV",
+      "geom": "POINT",
+      "coords": "65.583,42.217",
+      "base": 0,
+      "top": 10000,
+      "dir": "NE",
+      "spd": "11",
+      "chng": "NC",
+      "rawSigmet": "WSRS31 RUSP 141422\nULLL SIGMET 12 VALID 141500/141800 ULLI-\nULLL SANKT-PETERBURG FIR SEV ICE (FZRA) FCST WI N7030 E04932 - N7023\nE05748 - N6828 E05938 -\nN6701 E05752 - N6535 E04213 - N6838 E04315 - N7030 E04932 SFC/FL100\nMOV NE 20KMH NC="
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+42.22,65.58     ]
+    }
+  },
+  { "type": "Feature",
     "id": "1274049",
     "properties": {
       "data": "ISIGMET",
