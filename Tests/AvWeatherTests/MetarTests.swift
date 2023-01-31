@@ -1,38 +1,6 @@
 import XCTest
 @testable import AvWeather
 
-class URLProtocolMetarMock: URLProtocol {
-
-    static var testURLs = [String: Data]()
-
-    override class func canInit(with request: URLRequest) -> Bool {
-        return true
-    }
-
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
-    }
-
-    override func startLoading() {
-        if let url = request.url {
-            let headers: [String: String] = [
-                "Content-Type": "text/xml",
-            ]
-            if let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers) {
-                self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            }
-            let urlString = String(url.absoluteString.split(separator: "?")[0])
-            if let data = URLProtocolMetarMock.testURLs[urlString] {
-                self.client?.urlProtocol(self, didLoad: data)
-            }
-        }
-
-        self.client?.urlProtocolDidFinishLoading(self)
-    }
-
-    override func stopLoading() { }
-
-}
 
 final class MetarTests: XCTestCase {
 
@@ -45,9 +13,9 @@ final class MetarTests: XCTestCase {
         do {
             let data = try Data(contentsOf: testDataURL)
 
-            URLProtocolMetarMock.testURLs = [url: data]
+            URLProtocolAvWeatherMock.testURLs = [url: data]
             let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [URLProtocolMetarMock.self]
+            config.protocolClasses = [URLProtocolAvWeatherMock.self]
 
             let session = URLSession(configuration: config)
 
@@ -113,9 +81,9 @@ final class MetarTests: XCTestCase {
         do {
             let data = try Data(contentsOf: testDataURL)
 
-            URLProtocolMetarMock.testURLs = [url: data]
+            URLProtocolAvWeatherMock.testURLs = [url: data]
             let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [URLProtocolMetarMock.self]
+            config.protocolClasses = [URLProtocolAvWeatherMock.self]
 
             let session = URLSession(configuration: config)
 
@@ -176,10 +144,10 @@ final class MetarTests: XCTestCase {
         do {
             let data = try Data(contentsOf: testDataURL)
 
-            URLProtocolMetarMock.testURLs = [url: data]
+            URLProtocolAvWeatherMock.testURLs = [url: data]
 
             let config = URLSessionConfiguration.ephemeral
-            config.protocolClasses = [URLProtocolMetarMock.self]
+            config.protocolClasses = [URLProtocolAvWeatherMock.self]
 
             let session = URLSession(configuration: config)
 
@@ -210,6 +178,20 @@ final class MetarTests: XCTestCase {
             XCTFail("Failed to load test data: \(error)")
         }
     }
+    
+    func testAsyncMetar() async throws {
+        
+        let client = ADDSClient()
+        let request = MetarRequest(forStations: ["ESSA", "ENGM", "GCLP"], mostRecent: true)
+
+        do {
+            let metars = try await client.send(request)
+            XCTAssert(metars.count == 3, "Error getting metars")
+        } catch {
+            XCTFail("Error thrown getting metars: \(error.localizedDescription)")
+        }
+    }
+    
 
     static var allTests = [
         ("testMetarLoadSingleStation", testMetarLoadSingleStation),
